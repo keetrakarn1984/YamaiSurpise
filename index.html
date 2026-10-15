@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Anniversary ❤</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root { --pink:#ff6b9d; --deep:#c9184a; --bg1:#fff0f5; --bg2:#ffd6e5; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Mali',sans-serif; background:linear-gradient(160deg,var(--bg1),var(--bg2)); color:#5a1a33; min-height:100vh; overflow-x:hidden; }
+  section { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; text-align:center; }
+  h1,h2 { font-family:'Pacifico','Mali',cursive; color:var(--deep); font-weight:400; }
+  h1 { font-size:2.4rem; margin-bottom:12px; }
+  h2 { font-size:1.8rem; margin-bottom:20px; }
+  p { line-height:1.8; }
+  button { font-family:inherit; font-size:1.1rem; padding:14px 32px; border:none; border-radius:999px; background:var(--pink); color:#fff; box-shadow:0 6px 18px rgba(201,24,74,.35); cursor:pointer; transition:transform .2s; }
+  button:active { transform:scale(.95); }
+
+  /* hearts background */
+  .heart { position:fixed; bottom:-40px; pointer-events:none; animation:floatUp linear forwards; z-index:0; }
+  @keyframes floatUp { to { transform:translateY(-115vh) rotate(25deg); opacity:0; } }
+  section, #music-btn { position:relative; z-index:1; }
+
+  /* intro */
+  #intro .envelope { font-size:6rem; animation:beat 1.2s infinite; cursor:pointer; margin:24px 0; }
+  @keyframes beat { 50% { transform:scale(1.15); } }
+
+  /* hidden until opened */
+  #content { display:none; }
+  .fade { opacity:0; transform:translateY(30px); transition:all 1s; }
+  .fade.show { opacity:1; transform:none; }
+
+  /* counter */
+  .counter { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:20px; max-width:420px; width:100%; }
+  .counter div { background:#fff; border-radius:16px; padding:14px 4px; box-shadow:0 4px 14px rgba(201,24,74,.15); }
+  .counter b { display:block; font-size:1.8rem; color:var(--deep); }
+  .counter span { font-size:.8rem; }
+
+  /* greeting card */
+  .card-wrap { perspective:1200px; width:min(320px,86vw); height:420px; cursor:pointer; }
+  .card { position:relative; width:100%; height:100%; }
+  .card .inside { position:absolute; inset:0; background:#fffaf0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ctext x='4' y='28' font-size='20' opacity='.07'%3E❤%3C/text%3E%3C/svg%3E"); border-radius:6px 16px 16px 6px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:30px 24px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .card .inside h3 { font-family:'Pacifico','Mali',cursive; color:var(--deep); font-weight:400; font-size:1.5rem; margin-bottom:14px; }
+  .card .inside p { white-space:pre-line; font-size:1rem; }
+  .card .inside .sign { margin-top:16px; color:var(--deep); font-weight:600; }
+  .card .cover { position:absolute; inset:0; transform-origin:left center; transition:transform 1.2s ease; backface-visibility:hidden; background:linear-gradient(135deg,#ff6b9d,#c9184a); border-radius:6px 16px 16px 6px; box-shadow:0 10px 30px rgba(0,0,0,.3); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; padding:20px; }
+  .card .cover .emoji { font-size:4.5rem; animation:beat 1.4s infinite; }
+  .card .cover .ttl { font-family:'Pacifico','Mali',cursive; font-size:1.7rem; margin:14px 0 8px; }
+  .card .cover .hint { font-size:.85rem; opacity:.9; }
+  .card.open .cover { transform:rotateY(-170deg); pointer-events:none; }
+
+  /* gallery */
+  .gallery { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; max-width:520px; width:100%; }
+  .gallery figure { background:#fff; padding:8px 8px 14px; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,.15); transform:rotate(-2deg); }
+  .gallery figure:nth-child(even) { transform:rotate(2deg); }
+  .gallery img { width:100%; aspect-ratio:1; object-fit:cover; display:block; background:#ffe0ea; }
+  .gallery figcaption { font-size:.85rem; margin-top:6px; }
+
+  /* letter */
+  .letter { background:#fffaf0; max-width:480px; padding:28px 24px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.15); text-align:left; white-space:pre-line; min-height:260px; }
+  #final .big { font-size:4rem; animation:beat 1s infinite; }
+
+  #music-btn { position:fixed; top:14px; right:14px; width:46px; height:46px; padding:0; font-size:1.3rem; z-index:10; }
+</style>
+</head>
+<body>
+
+<button id="music-btn" title="เปิด/ปิดเพลง">🎵</button>
+<audio id="bgm" loop preload="auto"></audio>
+
+<!-- ===== หน้าแรก ===== -->
+<section id="intro">
+  <h1>มีอะไรบางอย่างให้บี๋ ๆๆๆๆ 💌</h1>
+  <p>แตะที่ซองจดหมายเพื่อเปิดดูนะ</p>
+  <div class="envelope" id="open">💌</div>
+</section>
+
+<!-- ===== เนื้อหา ===== -->
+<div id="content">
+
+  <section class="fade">
+    <h1 id="title"></h1>
+    <p id="subtitle"></p>
+    <div class="counter">
+      <div><b id="c-d">0</b><span>วัน</span></div>
+      <div><b id="c-h">0</b><span>ชั่วโมง</span></div>
+      <div><b id="c-m">0</b><span>นาที</span></div>
+      <div><b id="c-s">0</b><span>วินาที</span></div>
+    </div>
+    <p style="margin-top:16px">ที่เราอยู่ด้วยกันมา 💕</p>
+  </section>
+
+  <!-- ===== การ์ดอวยพร ===== -->
+  <section class="fade">
+    <h2>การ์ดอวยพร</h2>
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="inside">
+          <h3 id="card-title"></h3>
+          <p id="card-text"></p>
+          <div class="sign" id="card-sign"></div>
+        </div>
+        <div class="cover">
+          <div class="emoji">💝</div>
+          <div class="ttl">Happy Anniversary</div>
+          <div class="hint">แตะเพื่อเปิดการ์ด</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade">
+    <h2>ความทรงจำของเรา</h2>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="fade">
+    <h2>จดหมายถึงเธอ</h2>
+    <div class="letter" id="letter"></div>
+  </section>
+
+  <section class="fade" id="final">
+    <div class="big">❤️</div>
+    <h1 id="end-title"></h1>
+    <p id="end-text" style="margin:14px 0 24px"></p>
+    <button id="yes">รักบี๋ๆๆ ที่สุดเลย 💖</button>
+  </section>
+</div>
+
+<script>
+/* =========================================================
+   ✏️ แก้ตรงนี้ได้เลย
+   ========================================================= */
+const CONFIG = {
+  herName:   "ใยไหม",                 // ชื่อ/ชื่อเล่นแฟน
+  myName:    "เบียร์สุดหล่อ",                    // ชื่อเธอ/ชื่อคุณ
+  startDate: "2023-08-16T00:00:00",   // วันที่เริ่มคบกัน (ปี-เดือน-วัน)
+  years:     3,                        // ครบรอบกี่ปี
+  music:     "",                       // ใส่ path เพลง เช่น "song.mp3" (เว้นว่างได้)
+
+  // ข้อความในการ์ดอวยพร
+  cardTitle: "สุขสันต์วันครบรอบ  ",
+  cardText:
+`ขอให้เรารักกันแบบนี้ไปนาน ๆ
+มีความสุข สุขภาพแข็งแรง
+และมีกันและกันในทุกวันนะ`,
+
+  // รูปภาพ: ใส่ไฟล์รูปไว้โฟลเดอร์เดียวกับ index.html
+  photos: [
+    { src: "photo1.jpg", caption: "วันแรกที่เจอกัน ไม่มีรูป" },
+    { src: "photo2.jpg", caption: "ไปเที่ยวด้วยกัน" },
+    { src: "photo3.jpg", caption: "วันที่มีความสุข" },
+    { src: "photo4.jpg", caption: "ทุกวันกับเธอ" }
+  ],
+
+  letter:
+`ถึง ที่รักของฉัน
+
+ขอบคุณที่อยู่ด้วยกันมาตลอดเวลาที่ผ่านมา
+ขอบคุณที่เข้าใจ ที่อดทน และที่รักกันเสมอ
+
+ปีนี้ก็เหมือนทุกปี
+เค้ายังรักบี๋ ๆมากขึ้นทุกวัน
+
+สุขสันต์วันครบรอบนะ
+รักบี๋ ๆที่สุดเลย ❤️`
+};
+
+/* =========================================================
+   โค้ดส่วนหลัง (ไม่ต้องแก้ก็ได้)
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const bgm = $('bgm');
+if (CONFIG.music) bgm.src = CONFIG.music; else $('music-btn').style.display = 'none';
+
+// หัวข้อ
+$('title').textContent = `Happy ${CONFIG.years} Years Anniversary`;
+$('subtitle').textContent = `ถึง ${CONFIG.herName} จาก ${CONFIG.myName}`;
+$('end-title').textContent = `Happy Anniversary, ${CONFIG.herName}`;
+$('end-text').textContent = "ขอบคุณที่เป็นของขวัญที่ดีที่สุดในชีวิตฉัน";
+
+// แกลเลอรี่
+$('gallery').innerHTML = CONFIG.photos.map(p =>
+  `<figure><img src="${p.src}" alt="" onerror="this.style.opacity=.3"><figcaption>${p.caption}</figcaption></figure>`
+).join('');
+
+// ตัวนับเวลา
+function tick() {
+  const diff = Math.max(0, Date.now() - new Date(CONFIG.startDate).getTime());
+  $('c-d').textContent = Math.floor(diff / 864e5);
+  $('c-h').textContent = Math.floor(diff / 36e5) % 24;
+  $('c-m').textContent = Math.floor(diff / 6e4) % 60;
+  $('c-s').textContent = Math.floor(diff / 1e3) % 60;
+}
+setInterval(tick, 1000); tick();
+
+// การ์ดอวยพร
+$('card-title').textContent = `${CONFIG.cardTitle} ${CONFIG.herName}`;
+$('card-text').textContent = CONFIG.cardText;
+$('card-sign').textContent = `❤ จาก ${CONFIG.myName}`;
+$('card').addEventListener('click', () => {
+  $('card').classList.add('open');
+  for (let i=0;i<20;i++) setTimeout(spawnHeart, i*60);
+});
+
+// หัวใจลอย
+function spawnHeart() {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = ['❤','💖','💕','💗','🌸'][Math.floor(Math.random()*5)];
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.fontSize = (14 + Math.random()*22) + 'px';
+  h.style.animationDuration = (6 + Math.random()*6) + 's';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 12000);
+}
+setInterval(spawnHeart, 600);
+
+// เปิดซอง
+$('open').addEventListener('click', () => {
+  $('intro').style.display = 'none';
+  $('content').style.display = 'block';
+  if (CONFIG.music) bgm.play().catch(()=>{});
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+  for (let i=0;i<25;i++) setTimeout(spawnHeart, i*80);
+  window.scrollTo(0,0);
+});
+
+// ปรากฏตอนเลื่อน + พิมพ์จดหมายทีละตัว
+let typed = false;
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('show');
+    if (e.target.contains($('letter')) && !typed) { typed = true; typeLetter(); }
+  });
+}, { threshold: .3 });
+
+function typeLetter() {
+  const el = $('letter'); let i = 0;
+  const t = setInterval(() => {
+    el.textContent += CONFIG.letter[i++];
+    if (i >= CONFIG.letter.length) clearInterval(t);
+  }, 55);
+}
+
+// ปุ่มสุดท้าย
+$('yes').addEventListener('click', () => {
+  for (let i=0;i<60;i++) setTimeout(spawnHeart, i*40);
+  $('yes').textContent = "รักมาก ๆๆๆๆๆๆ  🥰";
+});
+
+// ปุ่มเพลง
+$('music-btn').addEventListener('click', () => {
+  bgm.paused ? bgm.play() : bgm.pause();
+});
+</script>
+</body>
+</html>
